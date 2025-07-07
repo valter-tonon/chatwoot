@@ -1,11 +1,9 @@
 require 'openai'
 
-class Captain::Llm::AssistantChatService < Llm::BaseOpenAiService
+class Captain::Llm::AssistantChatService < Llm::BaseAiService
   include Captain::ChatHelper
 
   def initialize(assistant: nil)
-    super()
-
     @assistant = assistant
     @messages = [system_message]
     @response = ''

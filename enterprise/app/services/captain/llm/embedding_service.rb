@@ -1,12 +1,15 @@
 require 'openai'
 
-class Captain::Llm::EmbeddingService < Llm::BaseOpenAiService
+class Captain::Llm::EmbeddingService < Llm::BaseAiService
   class EmbeddingsError < StandardError; end
 
   DEFAULT_MODEL = 'text-embedding-3-small'.freeze
 
   def get_embedding(content, model: DEFAULT_MODEL)
-    response = @client.embeddings(
+    # Use the AI service provider for embeddings
+    ai_service = Llm::BaseAiService.create_client
+    
+    response = ai_service.embeddings(
       parameters: {
         model: model,
         input: content

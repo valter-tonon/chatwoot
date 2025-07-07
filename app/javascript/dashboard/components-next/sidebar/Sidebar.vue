@@ -202,6 +202,7 @@ const menuItems = computed(() => {
       name: 'Captain',
       icon: 'i-woot-captain',
       label: t('SIDEBAR.CAPTAIN'),
+      alwaysShow: true,
       children: [
         {
           name: 'Assistants',

@@ -32,11 +32,11 @@
 - name: BRAND_URL
   value: 'https://www.chatwoot.com'
   display_title: 'Brand URL'
-  description: 'The URL that would be used in emails under the section “Powered By”'
+  description: 'The URL that would be used in emails under the section "Powered By"'
 - name: WIDGET_BRAND_URL
   value: 'https://www.chatwoot.com'
   display_title: 'Widget Brand URL'
-  description: 'The URL that would be used in the widget under the section “Powered By”'
+  description: 'The URL that would be used in the widget under the section "Powered By"'
 - name: BRAND_NAME
   value: 'Chatwoot'
   display_title: 'Brand Name'
@@ -138,6 +138,10 @@
 # End of Microsoft Email Channel Config
 
 # MARK: Captain Config
+- name: CAPTAIN_AI_PROVIDER
+  display_title: 'AI Provider'
+  description: 'Select the AI provider for Captain (openai, deepseek, gemini)'
+  value: 'openai'
 - name: CAPTAIN_OPEN_AI_API_KEY
   display_title: 'OpenAI API Key'
   description: 'The API key used to authenticate requests to OpenAI services for Captain AI.'
@@ -145,7 +149,28 @@
   type: secret
 - name: CAPTAIN_OPEN_AI_MODEL
   display_title: 'OpenAI Model'
-  description: 'The OpenAI model configured for use in Captain AI. Default: gpt-4o-mini'
+  description: 'The OpenAI model to use (e.g., gpt-4o, gpt-4o-mini, gpt-3.5-turbo)'
+  value: 'gpt-4o-mini'
+  locked: false
+- name: CAPTAIN_DEEPSEEK_API_KEY
+  display_title: 'DeepSeek API Key'
+  description: 'The API key used to authenticate requests to DeepSeek services for Captain AI.'
+  locked: false
+  type: secret
+- name: CAPTAIN_DEEPSEEK_MODEL
+  display_title: 'DeepSeek Model'
+  description: 'The DeepSeek model to use (e.g., deepseek-chat, deepseek-coder)'
+  value: 'deepseek-chat'
+  locked: false
+- name: CAPTAIN_GEMINI_API_KEY
+  display_title: 'Google Gemini API Key'
+  description: 'The API key used to authenticate requests to Google Gemini services for Captain AI.'
+  locked: false
+  type: secret
+- name: CAPTAIN_GEMINI_MODEL
+  display_title: 'Gemini Model'
+  description: 'The Gemini model to use (e.g., gemini-2.0-flash, gemini-1.5-pro)'
+  value: 'gemini-2.0-flash'
   locked: false
 - name: CAPTAIN_FIRECRAWL_API_KEY
   display_title: 'FireCrawl API Key (optional)'
@@ -213,7 +238,7 @@
 
 # ------- Chatwoot Internal Config for Self Hosted ----#
 - name: INSTALLATION_PRICING_PLAN
-  value: 'community'
+  value: 'enterprise'
   description: 'The pricing plan for the installation, retrieved from the billing API'
 - name: INSTALLATION_PRICING_PLAN_QUANTITY
   value: 0

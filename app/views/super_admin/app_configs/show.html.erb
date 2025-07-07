@@ -17,12 +17,28 @@
 <section class="main-content__body">
   <%= form_with url: super_admin_app_config_url(config: @config) , method: :post do |form| %>
     <% @allowed_configs.each do |key| %>
-      <div class="flex mb-8">
+      <div class="flex mb-8 <%= 'provider-config' if key.include?('CAPTAIN_') && key != 'CAPTAIN_AI_PROVIDER' && key != 'CAPTAIN_FIRECRAWL_API_KEY' %> 
+                               <%= 'openai-config' if key.include?('OPEN_AI') %>
+                               <%= 'deepseek-config' if key.include?('DEEPSEEK') %>
+                               <%= 'gemini-config' if key.include?('GEMINI') %>">
         <div class="field-unit__label">
           <%= form.label "app_config[#{key}]", @installation_configs[key]&.dig('display_title') || key %>
         </div>
         <div class="-mt-2 field-unit__field ">
-          <% if @installation_configs[key]&.dig('type') == 'boolean' %>
+          <% if key == 'CAPTAIN_AI_PROVIDER' %>
+            <%= form.select "app_config[#{key}]",
+              [
+                ["OpenAI", "openai"],
+                ["DeepSeek", "deepseek"],
+                ["Google Gemini", "gemini"]
+              ],
+              { selected: @app_config[key] || 'openai' },
+              {
+                class: "mt-2 border border-slate-100 p-1.5 rounded-md w-full",
+                onchange: "toggleProviderConfigs(this.value)"
+              }
+            %>
+          <% elsif @installation_configs[key]&.dig('type') == 'boolean' %>
             <%= form.select "app_config[#{key}]",
               [["True", true], ["False", false]],
               { selected: ActiveModel::Type::Boolean.new.cast(@app_config[key]) },
@@ -73,6 +89,7 @@
 <% content_for :javascript do %>
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Toggle password visibility
     document.querySelectorAll('.toggle-password').forEach(button => {
       button.addEventListener('click', () => {
         const targetId = button.dataset.target;
@@ -89,6 +106,34 @@
         }
       });
     });
+
+    // Initialize provider configs visibility
+    const providerSelect = document.querySelector('select[name="app_config[CAPTAIN_AI_PROVIDER]"]');
+    if (providerSelect) {
+      toggleProviderConfigs(providerSelect.value);
+    }
   });
+
+  function toggleProviderConfigs(provider) {
+    // Hide all provider configs
+    document.querySelectorAll('.provider-config').forEach(div => {
+      div.style.display = 'none';
+    });
+
+    // Show configs for selected provider
+    if (provider === 'openai') {
+      document.querySelectorAll('.openai-config').forEach(div => {
+        div.style.display = 'flex';
+      });
+    } else if (provider === 'deepseek') {
+      document.querySelectorAll('.deepseek-config').forEach(div => {
+        div.style.display = 'flex';
+      });
+    } else if (provider === 'gemini') {
+      document.querySelectorAll('.gemini-config').forEach(div => {
+        div.style.display = 'flex';
+      });
+    }
+  }
   </script>
 <% end %>

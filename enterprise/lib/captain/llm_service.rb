@@ -1,23 +1,18 @@
-require 'openai'
-
 class Captain::LlmService
-  def initialize(config)
-    @client = OpenAI::Client.new(
-      access_token: config[:api_key],
-      log_errors: Rails.env.development?
-    )
+  def initialize(config = {})
+    @client = Llm::BaseAiService.create_client
     @logger = Rails.logger
   end
 
   def call(messages, functions = [])
-    openai_params = {
-      model: 'gpt-4o',
+    ai_params = {
+      model: @client.model,
       response_format: { type: 'json_object' },
       messages: messages
     }
-    openai_params[:tools] = functions if functions.any?
+    ai_params[:tools] = functions if functions.any?
 
-    response = @client.chat(parameters: openai_params)
+    response = @client.chat(parameters: ai_params)
     handle_response(response)
   rescue StandardError => e
     handle_error(e)

@@ -2,9 +2,12 @@ module Captain::ChatHelper
   def request_chat_completion
     log_chat_completion_request
 
-    response = @client.chat(
+    # Use the AI service provider instead of direct client access
+    ai_service = Llm::BaseAiService.create_client
+    
+    response = ai_service.chat(
       parameters: {
-        model: @model,
+        model: ai_service.model,
         messages: @messages,
         tools: @tool_registry&.registered_tools || [],
         response_format: { type: 'json_object' },
@@ -26,7 +29,16 @@ module Captain::ChatHelper
     if message['tool_calls']
       process_tool_calls(message['tool_calls'])
     else
-      message = JSON.parse(message['content'].strip)
+      # Clean the response content to handle markdown-wrapped JSON
+      content = message['content'].strip
+      # Remove markdown code block wrapper if present
+      if content.start_with?('```json')
+        content = content.gsub(/^```json\n?/, '').gsub(/\n?```\n?$/, '')
+      elsif content.start_with?('```')
+        content = content.gsub(/^```\n?/, '').gsub(/\n?```\n?$/, '')
+      end
+      
+      message = JSON.parse(content.strip)
       persist_message(message, 'assistant')
       message
     end

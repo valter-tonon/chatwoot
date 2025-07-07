@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converto Chat - Automatize Sua Prospecção com IA</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    .bg-gradient-converto {
+      background: linear-gradient(135deg, #303380, #2E87D4);
+    }
+    #particles {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+    }
+    .btn-neon {
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+    }
+    .btn-neon:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 221, 235, 0.8);
+    }
+  </style>
+</head>
+<body class="font-sans text-white bg-gray-900">
+  <!-- Header -->
+  <header class="fixed top-0 w-full bg-gradient-converto shadow-lg z-50">
+    <nav class="container mx-auto flex items-center justify-between py-4 px-6">
+      <div class="flex items-center space-x-3">
+        <img src="/convertoicon.png" alt="Logo Converto Chat" class="h-10 w-10 rounded-full shadow-lg bg-white p-1">
+        <span class="text-2xl font-bold">Converto Chat</span>
+      </div>
+      <ul class="hidden md:flex space-x-6">
+        <li><a href="#home" class="hover:text-[#00DDEB]">Início</a></li>
+        <li><a href="#features" class="hover:text-[#00DDEB]">Funcionalidades</a></li>
+        <li><a href="#pricing" class="hover:text-[#00DDEB]">Preços</a></li>
+        <li><a href="#contact" class="hover:text-[#00DDEB]">Contato</a></li>
+      </ul>
+      <a href="#cta" class="bg-[#00DDEB] text-gray-900 px-4 py-2 rounded-full font-semibold btn-neon">Teste Grátis</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="min-h-screen flex items-center justify-center relative bg-gradient-converto overflow-hidden">
+    <canvas id="particles" class="absolute inset-0"></canvas>
+    <div class="container mx-auto px-6 text-center z-10 flex flex-col items-center justify-center">
+      <img src="/convertoicon.png" alt="Logo Converto Chat" class="w-40 h-40 mb-8 rounded-full shadow-lg bg-white p-3">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-hero-title">Automatize Sua Prospecção com IA</h1>
+      <p class="text-2xl md:text-3xl mb-8 animate-hero-subtitle">Converta leads no WhatsApp e outros canais com chatbots inteligentes e automações poderosas.</p>
+      <ul class="mb-10 space-y-4 text-left inline-block text-xl md:text-2xl">
+        <li><i class="fas fa-check text-[#00DDEB] mr-3"></i> Respostas automáticas 24/7</li>
+        <li><i class="fas fa-bolt text-[#00DDEB] mr-3"></i> Integração fácil com WhatsApp</li>
+        <li><i class="fas fa-chart-line text-[#00DDEB] mr-3"></i> Relatórios em tempo real</li>
+        <li><i class="fas fa-robot text-[#00DDEB] mr-3"></i> IA que qualifica leads para você</li>
+      </ul>
+      <a href="#cta" class="bg-[#00DDEB] text-gray-900 px-10 py-4 rounded-full font-semibold text-xl md:text-2xl btn-neon">Teste Grátis</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 bg-gray-800">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Por que escolher o Converto Chat?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-gradient-converto p-6 rounded-lg shadow-lg feature-card">
+          <i class="fas fa-robot text-4xl text-[#00DDEB] mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">IA Conversacional</h3>
+          <p>Chatbots com IA que respondem como humanos, qualificando leads 24/7.</p>
+        </div>
+        <div class="bg-gradient-converto p-6 rounded-lg shadow-lg feature-card">
+          <i class="fab fa-whatsapp text-4xl text-[#00DDEB] mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Integração com WhatsApp</h3>
+          <p>Conecte-se com clientes no canal mais usado no Brasil, com automação total.</p>
+        </div>
+        <div class="bg-gradient-converto p-6 rounded-lg shadow-lg feature-card">
+          <i class="fas fa-chart-line text-4xl text-[#00DDEB] mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Relatórios em Tempo Real</h3>
+          <p>Acompanhe taxas de conversão e desempenho com dashboards intuitivos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 bg-gray-900">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O que nossos clientes dizem</h2>
+      <div class="relative overflow-hidden">
+        <div class="flex transition-transform duration-500 testimonial-slider">
+          <div class="min-w-full md:min-w-[33.33%] px-4 testimonial">
+            <div class="bg-gradient-converto p-6 rounded-lg shadow-lg">
+              <p class="mb-4">"O Converto Chat triplicou nossas conversões no WhatsApp!"</p>
+              <p class="font-semibold">João, Gráfica XYZ</p>
+            </div>
+          </div>
+          <div class="min-w-full md:min-w-[33.33%] px-4 testimonial">
+            <div class="bg-gradient-converto p-6 rounded-lg shadow-lg">
+              <p class="mb-4">"Automação incrível, nossos leads agora são qualificados 24/7."</p>
+              <p class="font-semibold">Maria, Imobiliária ABC</p>
+            </div>
+          </div>
+          <div class="min-w-full md:min-w-[33.33%] px-4 testimonial">
+            <div class="bg-gradient-converto p-6 rounded-lg shadow-lg">
+              <p class="mb-4">"Integração com n8n tornou nosso processo super eficiente."</p>
+              <p class="font-semibold">Carlos, Agência Digital</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="cta" class="py-16 bg-gradient-converto text-center">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Pronto para transformar suas vendas?</h2>
+      <p class="text-lg mb-6">Teste o Converto Chat grátis por 7 dias e veja a diferença!</p>
+      <a href="#signup" class="bg-[#00DDEB] text-gray-900 px-6 py-3 rounded-full font-semibold btn-neon">Teste Grátis por 7 Dias</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 bg-gray-800 text-center">
+    <div class="container mx-auto px-6">
+      <p class="mb-4">&copy; 2025 Converto Chat. Todos os direitos reservados.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="#" class="hover:text-[#00DDEB]"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-[#00DDEB]"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="hover:text-[#00DDEB]"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Animations -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from(".animate-hero-title", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+    gsap.from(".animate-hero-subtitle", { opacity: 0, y: 50, duration: 1, delay: 0.7 });
+    gsap.from(".animate-hero-cta", { opacity: 0, scale: 0.8, duration: 1, delay: 0.9 });
+    gsap.utils.toArray(".feature-card").forEach((card, i) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 100,
+        duration: 1,
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+        },
+        delay: i * 0.2,
+      });
+    });
+    const testimonials = document.querySelectorAll(".testimonial");
+    let currentTestimonial = 0;
+    function slideTestimonials() {
+      gsap.to(".testimonial-slider", {
+        x: `-${currentTestimonial * 100}%`,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+    }
+    setInterval(slideTestimonials, 5000);
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const particlesArray = [];
+    const numberOfParticles = 50;
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.1;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = "rgba(0, 221, 235, 0.8)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    function initParticles() {
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+        if (particlesArray[i].size <= 0.2) {
+          particlesArray.splice(i, 1);
+          i--;
+          particlesArray.push(new Particle());
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    initParticles();
+    animateParticles();
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html> 

@@ -191,6 +191,8 @@
   display_title: 'OpenAI Model'
   description: 'The OpenAI model configured for use in Captain AI. Default: gpt-4o-mini'
   locked: false
+  type: model_select
+  provider: openai
 - name: CAPTAIN_OPEN_AI_ENDPOINT
   display_title: 'OpenAI API Endpoint (optional)'
   description: 'The OpenAI endpoint configured for use in Captain AI. Default: https://api.openai.com/'
@@ -204,6 +206,8 @@
   display_title: 'Gemini Model'
   description: 'The Gemini model for Captain AI. Default: gemini-2.0-flash'
   locked: false
+  type: model_select
+  provider: gemini
 - name: CAPTAIN_DEEPSEEK_API_KEY
   display_title: 'DeepSeek API Key'
   description: 'The API key for DeepSeek. Get it at https://platform.deepseek.com/'
@@ -213,6 +217,8 @@
   display_title: 'DeepSeek Model'
   description: 'The DeepSeek model for Captain AI. Default: deepseek-chat'
   locked: false
+  type: model_select
+  provider: deepseek
 - name: CAPTAIN_EMBEDDING_MODEL
   display_title: 'Embedding Model (optional)'
   description: 'The embedding model configured for use in Captain AI. Default: text-embedding-3-small'

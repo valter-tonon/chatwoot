@@ -59,6 +59,21 @@
               { selected: @app_config[key] },
               class: "mt-2 border border-slate-100 p-1 rounded-md"
             %>
+          <% elsif @installation_configs[key]&.dig('type') == 'model_select' %>
+            <div class="relative">
+              <%= form.select "app_config[#{key}]",
+                @app_config[key].present? ? [[@app_config[key], @app_config[key]]] : [],
+                { include_blank: '-- Carregando modelos...' },
+                class: "mt-2 border border-slate-100 p-1 rounded-md model-select",
+                data: { provider: @installation_configs[key]['provider'], current_value: @app_config[key] }
+              %>
+              <button type="button"
+                class="absolute top-1/2 -translate-y-1/2 right-8 reset-base !bg-white !outline-0 text-xs text-blue-600 hover:text-blue-800 refresh-models"
+                data-provider="<%= @installation_configs[key]['provider'] %>"
+                data-target="app_config_<%= key %>"
+                title="Atualizar lista de modelos"
+              >&#x21bb;</button>
+            </div>
         <% else %>
           <%= form.text_field "app_config[#{key}]", value: @app_config[key] %>
         <% end %>
@@ -86,13 +101,89 @@
         const type = input.type === 'password' ? 'text' : 'password';
         input.type = type;
 
-        // Toggle icon
         const svg = button.querySelector('.eye-icon');
         if (type === 'password') {
           svg.classList.remove('eye-hide')
         } else {
           svg.classList.add('eye-hide')
         }
+      });
+    });
+
+    function fetchModels(selectEl) {
+      const provider = selectEl.dataset.provider;
+      const currentValue = selectEl.dataset.currentValue;
+      if (!provider) return;
+
+      selectEl.disabled = true;
+      selectEl.innerHTML = '<option value="">Carregando modelos...</option>';
+
+      fetch('/super_admin/captain_models?provider=' + encodeURIComponent(provider))
+        .then(res => res.json())
+        .then(data => {
+          selectEl.innerHTML = '';
+          if (data.error) {
+            selectEl.innerHTML = '<option value="">Erro: ' + data.error + '</option>';
+            if (currentValue) {
+              const opt = document.createElement('option');
+              opt.value = currentValue;
+              opt.textContent = currentValue + ' (atual)';
+              opt.selected = true;
+              selectEl.appendChild(opt);
+            }
+          } else if (data.models && data.models.length > 0) {
+            const blank = document.createElement('option');
+            blank.value = '';
+            blank.textContent = '-- Selecione um modelo --';
+            selectEl.appendChild(blank);
+
+            data.models.forEach(model => {
+              const opt = document.createElement('option');
+              opt.value = model.id;
+              opt.textContent = model.name !== model.id ? model.name + ' (' + model.id + ')' : model.id;
+              if (model.id === currentValue) opt.selected = true;
+              selectEl.appendChild(opt);
+            });
+
+            if (currentValue && !data.models.find(m => m.id === currentValue)) {
+              const opt = document.createElement('option');
+              opt.value = currentValue;
+              opt.textContent = currentValue + ' (atual - não encontrado na API)';
+              opt.selected = true;
+              selectEl.prepend(opt);
+            }
+          } else {
+            selectEl.innerHTML = '<option value="">Nenhum modelo encontrado</option>';
+            if (currentValue) {
+              const opt = document.createElement('option');
+              opt.value = currentValue;
+              opt.textContent = currentValue + ' (atual)';
+              opt.selected = true;
+              selectEl.appendChild(opt);
+            }
+          }
+          selectEl.disabled = false;
+        })
+        .catch(err => {
+          selectEl.innerHTML = '<option value="">Erro ao carregar</option>';
+          if (currentValue) {
+            const opt = document.createElement('option');
+            opt.value = currentValue;
+            opt.textContent = currentValue + ' (atual)';
+            opt.selected = true;
+            selectEl.appendChild(opt);
+          }
+          selectEl.disabled = false;
+        });
+    }
+
+    document.querySelectorAll('.model-select').forEach(select => fetchModels(select));
+
+    document.querySelectorAll('.refresh-models').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetId = button.dataset.target;
+        const select = document.getElementById(targetId);
+        if (select) fetchModels(select);
       });
     });
   });

@@ -111,23 +111,8 @@ jobs:
               docker compose exec -T rails bundle exec rails db:migrate
 
             echo "=== [8/8] Aplicando branding convertoChat ==="
-            docker compose exec -T rails bundle exec rails runner '
-              configs = {
-                "INSTALLATION_NAME" => "convertoChat",
-                "BRAND_NAME" => "convertoChat",
-                "LOGO" => "/chat.png",
-                "LOGO_DARK" => "/chat.png",
-                "LOGO_THUMBNAIL" => "/chat.png",
-                "BRAND_URL" => "https://www.convertochat.com",
-                "WIDGET_BRAND_URL" => "https://www.convertochat.com",
-                "INSTALLATION_PRICING_PLAN" => "enterprise"
-              }
-              configs.each do |name, value|
-                c = InstallationConfig.find_or_initialize_by(name: name)
-                c.update!(value: value)
-                puts "  #{name} = #{value}"
-              end
-            '
+            docker compose exec -T rails bundle exec rails runner \
+              "h={INSTALLATION_NAME:'convertoChat',BRAND_NAME:'convertoChat',LOGO:'/chat.png',LOGO_DARK:'/chat.png',LOGO_THUMBNAIL:'/chat.png',BRAND_URL:'https://www.convertochat.com',WIDGET_BRAND_URL:'https://www.convertochat.com',INSTALLATION_PRICING_PLAN:'enterprise'};h.each{|k,v|c=InstallationConfig.find_or_initialize_by(name:k.to_s);c.update!(value:v)}"
 
             echo "=== Deploy concluido! ==="
 
@@ -143,22 +128,8 @@ jobs:
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 http://localhost:3000)
             if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "302" ]; then
               echo "Health check OK (HTTP $HTTP_CODE)"
-
-              BODY=$(curl -s --max-time 10 http://localhost:3000)
-              VERSION=$(echo "$BODY" | grep -o 'appVersion":"[^"]*"' || echo "unknown")
-              echo "Version: $VERSION"
-
-              BRAND=$(docker compose exec -T rails bundle exec rails runner 'puts InstallationConfig.find_by(name: "BRAND_NAME")&.value' 2>/dev/null || echo "unknown")
-              echo "Brand: $BRAND"
-
-              if echo "$BRAND" | grep -qi "convertoChat"; then
-                echo "Branding OK: convertoChat"
-              else
-                echo "WARN: Branding pode nao estar aplicado ($BRAND)"
-              fi
             else
               echo "Health check FAILED (HTTP $HTTP_CODE)"
-              echo "Logs:"
               docker compose logs rails --tail 30
               exit 1
             fi

@@ -24,6 +24,14 @@ class Llm::BaseAiService
     RubyLLM.chat(model: model).with_temperature(temperature)
   end
 
+  # Applies JSON response mode to a RubyLLM chat instance.
+  # Uses response_format for OpenAI/DeepSeek; skips for Gemini (relies on prompt instructions).
+  def apply_json_mode(llm_chat, extra_params: {})
+    return llm_chat if Llm::Config.provider == 'gemini'
+
+    llm_chat.with_params({ response_format: { type: 'json_object' } }.merge(extra_params))
+  end
+
   private
 
   def setup_model
